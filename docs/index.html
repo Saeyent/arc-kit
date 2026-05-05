@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <script>(function(){var t=localStorage.getItem('arckit-theme');if(t==='dark')document.documentElement.classList.add('dark-mode');else if(t==='light')document.documentElement.classList.add('light-mode');else if(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)document.documentElement.classList.add('dark-mode')})();</script>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="description" content="ArcKit - Enterprise Architecture Governance & Vendor Procurement Toolkit. 70 AI-assisted commands (plus 46 community-contributed overlays) for systematic, compliant project delivery following UK Government standards.">
-    <meta name="keywords" content="enterprise architecture, UK government, GDS, architecture governance, vendor procurement, ArcKit, compliance, TCOP, secure by design">
+    <meta name="description" content="ArcKit - Enterprise Architecture Governance & Vendor Procurement Toolkit. 117 AI-assisted commands (71 core + 46 community-contributed overlays) covering UK, EU, France, Austria, Canada, and UAE governance frameworks.">
+    <meta name="keywords" content="enterprise architecture, UK government, EU, France, Austria, Canada, UAE, GDS, GDPR, AI Act, NIS2, ANSSI, PDPL, architecture governance, vendor procurement, ArcKit, compliance, TCOP, secure by design">
     <meta name="author" content="ArcKit">
     <meta property="og:title" content="ArcKit - Enterprise Architecture Governance & Vendor Procurement">
-    <meta property="og:description" content="70 AI-assisted commands for systematic, compliant architecture governance following UK Government standards.">
+    <meta property="og:description" content="117 AI-assisted commands for systematic, compliant architecture governance — UK Government baseline plus EU, France, Austria, Canada, and UAE community overlays.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://arckit.org/">
     <meta property="og:site_name" content="ArcKit">
     <meta property="og:image" content="https://arckit.org/og-image.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="ArcKit - Enterprise Architecture Governance & Vendor Procurement">
-    <meta name="twitter:description" content="70 AI-assisted commands for systematic, compliant architecture governance following UK Government standards.">
+    <meta name="twitter:description" content="117 AI-assisted commands for systematic, compliant architecture governance — UK Government baseline plus EU, France, Austria, Canada, and UAE community overlays.">
     <meta name="twitter:image" content="https://arckit.org/og-image.png">
     <title>ArcKit - Enterprise Architecture Governance & Vendor Procurement</title>
     <link rel="canonical" href="https://arckit.org/">
@@ -175,6 +175,41 @@
         .app-explore-card:nth-child(3) { border-top-color: #912b88; }
         .app-explore-card:nth-child(4) { border-top-color: #f47738; }
 
+        .app-jurisdiction-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .app-jurisdiction-card {
+            border: 2px solid #b1b4b6;
+            padding: 1.25rem;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: border-color 0.15s, background 0.15s;
+        }
+
+        .app-jurisdiction-card:hover { border-color: #1d70b8; background: #f8f8f8; }
+        .app-jurisdiction-card__flag { font-size: 1.75rem; line-height: 1; margin-bottom: 0.5rem; }
+        .app-jurisdiction-card__title { font-weight: 700; color: #1d70b8; font-size: 1.125rem; margin-bottom: 0.5rem; }
+        .app-jurisdiction-card__badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            padding: 0.125rem 0.5rem;
+            border-radius: 2px;
+            font-weight: 700;
+            color: white;
+        }
+        .app-jurisdiction-card__badge--core { background: #00703c; }
+        .app-jurisdiction-card__badge--community { background: #4c2c92; }
+        .app-jurisdiction-card__desc { color: #505a5f; font-size: 0.875rem; margin-top: 0.5rem; }
+        html.dark-mode .app-jurisdiction-card { border-color: #505a5f; }
+        html.dark-mode .app-jurisdiction-card:hover { background: #1a1d2e; border-color: #5694ca; }
+        html.dark-mode .app-jurisdiction-card__title { color: #5694ca; }
+        html.dark-mode .app-jurisdiction-card__desc { color: #b1b4b6; }
+
         .app-code-block {
             background: #0b0c0c;
             color: #00ff00;
@@ -313,13 +348,13 @@
                 "@type": "WebSite",
                 "name": "ArcKit",
                 "url": "https://arckit.org",
-                "description": "70 AI-assisted commands for systematic, compliant architecture governance following UK Government standards."
+                "description": "117 AI-assisted commands for systematic, compliant architecture governance across UK, EU, France, Austria, Canada, and UAE jurisdictions."
             },
             {
                 "@type": "WebPage",
                 "@id": "https://arckit.org/",
                 "name": "ArcKit - Enterprise Architecture Governance & Vendor Procurement",
-                "description": "70 AI-assisted commands for systematic, compliant project delivery following UK Government standards.",
+                "description": "117 AI-assisted commands for systematic, compliant project delivery — UK Government baseline plus EU, France, Austria, Canada, and UAE community overlays.",
                 "isPartOf": { "@id": "https://arckit.org" }
             }
         ]
@@ -370,15 +405,15 @@
         <div class="govuk-width-container govuk-!-margin-top-6">
             <div class="app-stats-grid">
                 <div class="app-stat-card">
-                    <div class="app-stat-number">70</div>
+                    <div class="app-stat-number">117</div>
                     <div class="app-stat-label">AI Commands</div>
                 </div>
                 <div class="app-stat-card">
-                    <div class="app-stat-number">13</div>
-                    <div class="app-stat-label">Categories</div>
+                    <div class="app-stat-number">6</div>
+                    <div class="app-stat-label">Jurisdictions</div>
                 </div>
                 <div class="app-stat-card">
-                    <div class="app-stat-number">9</div>
+                    <div class="app-stat-number">10</div>
                     <div class="app-stat-label">Autonomous Agents</div>
                 </div>
                 <div class="app-stat-card">
@@ -391,7 +426,7 @@
         <!-- 3. What is ArcKit? -->
         <div class="govuk-width-container govuk-!-margin-top-9">
             <h2 class="govuk-heading-l">What is ArcKit?</h2>
-            <p class="govuk-body">70 AI-assisted commands that generate complete governance documents &mdash; from stakeholder analysis and risk registers to design reviews and traceability matrices. Each command produces template-driven, audit-ready artifacts aligned to UK Government standards.</p>
+            <p class="govuk-body">117 AI-assisted commands that generate complete governance documents &mdash; from stakeholder analysis and risk registers to design reviews and traceability matrices. Each command produces template-driven, audit-ready artifacts. The UK Government baseline (71 core commands) ships alongside community-contributed overlays for the EU, France, Austria, Canada, and UAE.</p>
 
             <div class="app-feature-grid">
                 <div class="app-feature-card">
@@ -399,8 +434,8 @@
                     <p class="govuk-body">Follow GDS Agile Delivery phases with a structured command workflow. Every artifact is version-controlled, traceable, and linked to business drivers.</p>
                 </div>
                 <div class="app-feature-card">
-                    <h3 class="govuk-heading-m">Compliant</h3>
-                    <p class="govuk-body">Built-in compliance with the Technology Code of Practice, Secure by Design, GDS Service Standard, and UK Government procurement frameworks.</p>
+                    <h3 class="govuk-heading-m">Multi-Jurisdiction</h3>
+                    <p class="govuk-body">UK Government core (TCoP, Secure by Design, GDS Service Standard, MOD JSP 936, HM Treasury Green/Orange Books) with community overlays for GDPR, AI Act, NIS2, ANSSI, PDPL, and more.</p>
                 </div>
                 <div class="app-feature-card">
                     <h3 class="govuk-heading-m">AI-Assisted</h3>
@@ -450,6 +485,58 @@
             </div>
         </div>
 
+        <!-- 4a. Jurisdictions covered -->
+        <div class="govuk-width-container govuk-!-margin-top-9" id="jurisdictions">
+            <h2 class="govuk-heading-l">Jurisdictions covered</h2>
+            <p class="govuk-body">ArcKit ships a UK Government baseline alongside five community-contributed jurisdictional overlays. Use the <a href="commands.html" class="govuk-link">command reference</a> to filter by jurisdiction or tier — every overlay command is badged <code>[COMMUNITY]</code> and excluded from the official-tier count.</p>
+
+            <div class="app-jurisdiction-grid">
+                <a href="commands.html?jurisdiction=uk" class="app-jurisdiction-card govuk-link--no-visited-state">
+                    <div class="app-jurisdiction-card__flag">🇬🇧</div>
+                    <div class="app-jurisdiction-card__title">UK Government</div>
+                    <span class="app-jurisdiction-card__badge app-jurisdiction-card__badge--core">Core · 17 commands</span>
+                    <p class="app-jurisdiction-card__desc">GDS Service Standard, Technology Code of Practice, Secure by Design, MOD JSP 936, HM Treasury Green &amp; Orange Books, G-Cloud and DOS procurement, AI Playbook, ATRS.</p>
+                </a>
+                <a href="commands.html?jurisdiction=generic" class="app-jurisdiction-card govuk-link--no-visited-state">
+                    <div class="app-jurisdiction-card__flag">🌐</div>
+                    <div class="app-jurisdiction-card__title">Generic / Cross-jurisdiction</div>
+                    <span class="app-jurisdiction-card__badge app-jurisdiction-card__badge--core">Core · 54 commands</span>
+                    <p class="app-jurisdiction-card__desc">Jurisdiction-agnostic foundations: requirements, ADRs, Wardley Mapping, DevOps / MLOps / FinOps, traceability, conformance, vendor evaluation.</p>
+                </a>
+                <a href="commands.html?jurisdiction=eu" class="app-jurisdiction-card govuk-link--no-visited-state">
+                    <div class="app-jurisdiction-card__flag">🇪🇺</div>
+                    <div class="app-jurisdiction-card__title">EU Regulatory</div>
+                    <span class="app-jurisdiction-card__badge app-jurisdiction-card__badge--community">Community · 7 commands</span>
+                    <p class="app-jurisdiction-card__desc">GDPR, EU AI Act, NIS2, DORA, Cyber Resilience Act, Digital Services Act, Data Act.</p>
+                </a>
+                <a href="commands.html?jurisdiction=france" class="app-jurisdiction-card govuk-link--no-visited-state">
+                    <div class="app-jurisdiction-card__flag">🇫🇷</div>
+                    <div class="app-jurisdiction-card__title">France</div>
+                    <span class="app-jurisdiction-card__badge app-jurisdiction-card__badge--community">Community · 12 commands</span>
+                    <p class="app-jurisdiction-card__desc">ANSSI Guide d'hygiène, SecNumCloud 3.2, EBIOS Risk Manager, DINUM (RGI / RGAA / RGS / RGESN), CNIL RGPD, Diffusion Restreinte, code de la commande publique.</p>
+                </a>
+                <a href="commands.html?jurisdiction=austria" class="app-jurisdiction-card govuk-link--no-visited-state">
+                    <div class="app-jurisdiction-card__flag">🇦🇹</div>
+                    <div class="app-jurisdiction-card__title">Austria</div>
+                    <span class="app-jurisdiction-card__badge app-jurisdiction-card__badge--community">Community · 3 commands</span>
+                    <p class="app-jurisdiction-card__desc">NISG (NIS2 transposition), DSG / DSGVO, Bundesvergabegesetz 2018 procurement.</p>
+                </a>
+                <a href="commands.html?jurisdiction=canada" class="app-jurisdiction-card govuk-link--no-visited-state">
+                    <div class="app-jurisdiction-card__flag">🇨🇦</div>
+                    <div class="app-jurisdiction-card__title">Canada Federal</div>
+                    <span class="app-jurisdiction-card__badge app-jurisdiction-card__badge--community">Community · 12 commands</span>
+                    <p class="app-jurisdiction-card__desc">FITAA (C-70), PIA, ATIP, Algorithmic Impact Assessment, Charter, SOIA, GC Digital Standards, cloud residency, Official Languages Act, OCAP, PSPC procurement.</p>
+                </a>
+                <a href="commands.html?jurisdiction=uae" class="app-jurisdiction-card govuk-link--no-visited-state">
+                    <div class="app-jurisdiction-card__flag">🇦🇪</div>
+                    <div class="app-jurisdiction-card__title">UAE Federal</div>
+                    <span class="app-jurisdiction-card__badge app-jurisdiction-card__badge--community">Community · 12 commands</span>
+                    <p class="app-jurisdiction-card__desc">PDPL, IAS controls, sovereign cloud residency, UAE Pass integration, Smart Data classification, AI Charter, autonomy tier, federal procurement, digital records.</p>
+                </a>
+            </div>
+            <p class="govuk-body govuk-!-margin-top-4"><a href="commands.html" class="govuk-link">Browse all 117 commands &rarr;</a></p>
+        </div>
+
         <!-- 4b. Government Code Discovery -->
         <div class="govuk-width-container govuk-!-margin-top-9">
             <div class="app-feature-card" style="border-color: #00703c; border-width: 3px; padding: 2rem;">
@@ -479,7 +566,7 @@
         <!-- 5. Works with your AI -->
         <div class="govuk-width-container govuk-!-margin-top-9" id="multi-ai">
             <h2 class="govuk-heading-l">Works with your AI</h2>
-            <p class="govuk-body">All 70 official commands (plus 46 community-contributed overlays) produce identical outputs across AI systems. Choose the platform that fits your workflow.</p>
+            <p class="govuk-body">All 71 core commands plus 46 community overlays (117 total) produce identical outputs across AI systems. Choose the platform that fits your workflow.</p>
 
             <div class="app-ai-compact">
                 <div class="app-ai-compact-card app-ai-compact-card--premier">
@@ -786,11 +873,11 @@
             <div class="app-explore-grid">
                 <div class="app-explore-card">
                     <h3 class="govuk-heading-m"><a href="commands.html" class="govuk-link">AI Commands</a></h3>
-                    <p class="govuk-body-s">Browse all 70 official commands plus 46 community-contributed overlays across 13 baseline categories (and 5 community overlay categories) with examples and the full dependency matrix.</p>
+                    <p class="govuk-body-s">Browse all 117 commands (71 core + 46 community overlays) across 13 baseline categories and 5 community overlay categories. Filter by jurisdiction, tier, status, or category.</p>
                 </div>
                 <div class="app-explore-card">
                     <h3 class="govuk-heading-m"><a href="guides.html" class="govuk-link">Guides</a></h3>
-                    <p class="govuk-body-s">102 usage guides (plus 36 community overlay guides) covering discovery, planning, architecture, governance, compliance, and operations.</p>
+                    <p class="govuk-body-s">A usage guide for every command across 6 jurisdictions plus topical guides on discovery, planning, architecture, governance, compliance, and operations.</p>
                 </div>
                 <div class="app-explore-card">
                     <h3 class="govuk-heading-m"><a href="roles.html" class="govuk-link">Role Guides</a></h3>
@@ -798,7 +885,7 @@
                 </div>
                 <div class="app-explore-card">
                     <h3 class="govuk-heading-m"><a href="use-cases.html" class="govuk-link">Example Projects</a></h3>
-                    <p class="govuk-body-s">AI-generated architecture documentation from 43 public test projects spanning health, AI, cloud, and data.</p>
+                    <p class="govuk-body-s">AI-generated architecture documentation from 44 public test projects spanning health, AI, cloud, and data.</p>
                 </div>
             </div>
         </div>

@@ -16,7 +16,7 @@ Every command reads a template from `.arckit/templates/`, creates or reuses a nu
 
 ## Commands
 
-- [Command reference](https://arckit.org/commands.html): Searchable HTML catalogue of all 71 commands with parameters and examples.
+- [Command reference](https://arckit.org/commands.html): Searchable HTML catalogue of all 117 commands (71 core + 46 community overlays) with jurisdiction, tier, status, and category filters.
 - [Build harness guide](https://arckit.org/guides/build.md): `/arckit:build` parallel artefact generation via subagent isolation with YAML recipes (Claude Code only, v4.13.0+).
 - [Dependency matrix](https://arckit.org/DEPENDENCY-MATRIX.md): Which commands require which prerequisites.
 - [Workflow diagrams](https://arckit.org/WORKFLOW-DIAGRAMS.md): Visual flow from project init through procurement.
@@ -137,6 +137,31 @@ French government (apply on top of EU baseline):
 - [PSPC Procurement](https://github.com/tractorjuice/arc-kit/blob/main/arckit-claude/commands/ca-pspc.md): `/arckit.ca-pspc` Federal procurement strategy — PSPC Supply Manual, Standing Offer / AgileIQ / RFP, PSAB 5%, CFTA / CETA.
 - [OCAP® Sovereignty Assessment](https://github.com/tractorjuice/arc-kit/blob/main/arckit-claude/commands/ca-ocap.md): `/arckit.ca-ocap` First Nations OCAP® sovereignty assessment with FNIGC pre-engagement gate.
 
+### Austrian government compliance (community-contributed)
+
+> ⚠️ Community-maintained — output should be reviewed by qualified Austrian counsel and the Datenschutzbehörde / responsible NIS body before reliance.
+
+- [DSG / DSGVO](https://github.com/tractorjuice/arc-kit/blob/main/arckit-claude/commands/at-dsgvo.md): `/arckit.at-dsgvo` Austrian Datenschutzgesetz layer over GDPR — DSB notification, employer-context exemptions, sectoral rules.
+- [NISG (NIS2 transposition)](https://github.com/tractorjuice/arc-kit/blob/main/arckit-claude/commands/at-nisg.md): `/arckit.at-nisg` Austrian NIS2 transposition — sector scoping, qualified body audits, BMI reporting timelines.
+- [Bundesvergabegesetz 2018](https://github.com/tractorjuice/arc-kit/blob/main/arckit-claude/commands/at-bvergg.md): `/arckit.at-bvergg` Austrian public procurement — federal/sub-federal scope, SME thresholds, e-procurement obligations.
+
+### UAE Federal compliance (community-contributed)
+
+> ⚠️ Community-maintained — output should be reviewed by qualified UAE counsel, the UAE Data Office, and departmental cybersecurity officer before reliance.
+
+- [PDPL Compliance](https://github.com/tractorjuice/arc-kit/blob/main/arckit-claude/commands/uae-pdpl.md): `/arckit.uae-pdpl` UAE Personal Data Protection Law (Federal Decree-Law 45/2021) DPIA, lawful basis, cross-border transfers.
+- [IAS Statement of Applicability](https://github.com/tractorjuice/arc-kit/blob/main/arckit-claude/commands/uae-ias.md): `/arckit.uae-ias` UAE Information Assurance Standard (60 management + 128 technical controls, P1–P4 priority tiers).
+- [Smart Data Classification](https://github.com/tractorjuice/arc-kit/blob/main/arckit-claude/commands/uae-classification.md): `/arckit.uae-classification` Open / Shared / Confidential / Secret / Top Secret register with handling rules.
+- [Sovereign Cloud Residency](https://github.com/tractorjuice/arc-kit/blob/main/arckit-claude/commands/uae-cloud-residency.md): `/arckit.uae-cloud-residency` UAE National Cloud Security Policy v2 — Core42 / G42 sovereign / Microsoft UAE North + Central, FedNet, Sovereign Launchpad.
+- [UAE Pass Integration](https://github.com/tractorjuice/arc-kit/blob/main/arckit-claude/commands/uae-uaepass.md): `/arckit.uae-uaepass` OIDC / OAuth flow, claim mapping, Basic vs Verified profile, e-signature audit trail.
+- [Zero Bureaucracy / Service Catalogue](https://github.com/tractorjuice/arc-kit/blob/main/arckit-claude/commands/uae-zero-bureaucracy.md): `/arckit.uae-zero-bureaucracy` UAE Code for Government Services service catalogue review and CX KPIs.
+- [Digital Records Plan](https://github.com/tractorjuice/arc-kit/blob/main/arckit-claude/commands/uae-digital-records.md): `/arckit.uae-digital-records` UAE Government Services Digital Records Policy — source of truth register, retention.
+- [Data Sharing Agreement](https://github.com/tractorjuice/arc-kit/blob/main/arckit-claude/commands/uae-data-sharing.md): `/arckit.uae-data-sharing` UAE Government Services Data Sharing Policy — collect-once mapping, federation/API plan.
+- [National Priorities Alignment](https://github.com/tractorjuice/arc-kit/blob/main/arckit-claude/commands/uae-priorities-alignment.md): `/arckit.uae-priorities-alignment` Federal Government Guide alignment to NIS 2031, AI 2031, Digital Economy Strategy, We the UAE 2031.
+- [AI Charter](https://github.com/tractorjuice/arc-kit/blob/main/arckit-claude/commands/uae-ai-charter.md): `/arckit.uae-ai-charter` UAE Charter for AI compliance against the 12 principles.
+- [AI Autonomy Tier](https://github.com/tractorjuice/arc-kit/blob/main/arckit-claude/commands/uae-ai-autonomy-tier.md): `/arckit.uae-ai-autonomy-tier` Three-tier autonomy posture (internal-productivity / investor-facing / regulated) with promotion criteria.
+- [Federal Procurement](https://github.com/tractorjuice/arc-kit/blob/main/arckit-claude/commands/uae-procurement.md): `/arckit.uae-procurement` Federal Decree-Law 11/2023 — MoF Digital Procurement Platform ITT/RFP, In-Country Value plan.
+
 ### Operations
 
 - [DevOps strategy](https://arckit.org/guides/devops.md): `/arckit.devops` CI/CD, IaC, containers.
@@ -184,7 +209,7 @@ French government (apply on top of EU baseline):
 
 ## Test repositories (example outputs)
 
-ArcKit maintains 43 public test repositories under the `tractorjuice` GitHub org (pattern `arckit-test-project-v{N}-{slug}`, range v0–v48). Each one is a fully AI-generated architecture project demonstrating ArcKit commands end-to-end. Selected highlights:
+ArcKit maintains 44 public test repositories under the `tractorjuice` GitHub org (pattern `arckit-test-project-v{N}-{slug}`, range v0–v48). Each one is a fully AI-generated architecture project demonstrating ArcKit commands end-to-end. Selected highlights:
 
 - [v7 NHS Appointment Booking](https://github.com/tractorjuice/arckit-test-project-v7-nhs-appointment): Health digital service with NHS Spine, IG Toolkit, WCAG 2.1 AA, GDPR.
 - [v9 Cabinet Office GenAI Platform](https://github.com/tractorjuice/arckit-test-project-v9-cabinet-office-genai): Cross-government GenAI with AI Playbook, ATRS, departmental isolation.
@@ -196,7 +221,7 @@ ArcKit maintains 43 public test repositories under the `tractorjuice` GitHub org
 - [v46 ArcKit SDG Mono-Repo](https://github.com/tractorjuice/arckit-test-project-v46-sdg): 17 UN SDGs covering 78 UK Government technology projects.
 - [v48 ArcKit as a Service for UK Government](https://github.com/tractorjuice/arckit-test-project-v48-arckit-as-a-service): Managed multi-tenant offering of ArcKit aligned to GDS Service Standard, TCoP, NCSC CAF, and G-Cloud — ArcKit dogfooded on its own GovTech offering.
 
-The full table (all 43 public repos) is in [CLAUDE.md](https://github.com/tractorjuice/arc-kit/blob/main/CLAUDE.md#test-repositories) and the example index in [README.md](https://github.com/tractorjuice/arc-kit/blob/main/README.md#example-repositories).
+The full table (all 44 public repos) is in [CLAUDE.md](https://github.com/tractorjuice/arc-kit/blob/main/CLAUDE.md#test-repositories) and the example index in [README.md](https://github.com/tractorjuice/arc-kit/blob/main/README.md#example-repositories).
 
 ## Source code and distributions
 

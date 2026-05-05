@@ -5012,6 +5012,19 @@
             document.getElementById('tier-filter').addEventListener('change', filterTable);
             document.getElementById('search-filter').addEventListener('input', filterTable);
 
+            // Prefill filters from query string (e.g. commands.html?jurisdiction=uk&tier=core)
+            const params = new URLSearchParams(window.location.search);
+            ['status', 'category', 'jurisdiction', 'tier'].forEach(function(key) {
+                const value = params.get(key);
+                if (!value) return;
+                const select = document.getElementById(key + '-filter');
+                if (select && Array.from(select.options).some(o => o.value === value)) {
+                    select.value = value;
+                }
+            });
+            const search = params.get('q');
+            if (search) document.getElementById('search-filter').value = search;
+
             document.querySelectorAll('#command-table th[data-sort-col]').forEach(function(th) {
                 th.addEventListener('click', function() {
                     sortTable(parseInt(th.getAttribute('data-sort-col'), 10));
