@@ -35,7 +35,7 @@ Skip for: official-baseline command changes, plugin infrastructure, hooks, agent
 
 End with: `gh pr comment <N> --body "$(cat <<'EOF'...EOF)"` to post.
 
-## The 4 recurring blocker classes
+## The 5 recurring blocker classes
 
 These are the failure modes that recur across overlay PRs. Check each, in order:
 
@@ -105,13 +105,31 @@ git status --porcelain | grep -v "memory/"
 
 **Fix:** ask author to rebase on main, re-run converter, and amend.
 
+### B5 — Regime not registered in `REGIMES` / `REGIME_LABELS`
+
+**Symptom:** New `regime: '<XX>'` declared on each new doc-type entry in `arckit-claude/config/doc-types.mjs`, but the `<XX>` code is missing from the exported `REGIMES` array and/or `REGIME_LABELS` object.
+
+**Why it matters:** Per-record `regime:` controls which bucket each artefact falls into, but consumers iterating `REGIMES` (dashboards, group headers, navigator UI) silently skip the unregistered jurisdiction. The `HIGH_SEVERITY_BY_REGIME` derivation has a fallback so the local file still works — but downstream consumers don't. Symptom is invisible in unit tests.
+
+**Verification:**
+```bash
+# Confirm the new regime code appears in BOTH the array and the labels object
+grep -nE "^export const REGIMES|^export const REGIME_LABELS|^  [A-Z]+:" arckit-claude/config/doc-types.mjs | head -20
+# Then cross-check against the regime values declared on new doc-types
+grep -oE "regime: '[A-Z]+'" arckit-claude/config/doc-types.mjs | sort -u
+```
+
+**Working precedent:** PR #441 (au-federal) added both `'AU'` and `'CA'` (the latter a corrective for an earlier omission), e.g. `arckit-claude/config/doc-types.mjs:165-179`. Note the `REGIME_LABELS` ordering convention is officially-maintained-first then community alphabetical.
+
+**Discovered in:** Test review of merged PR #432 (ca-federal-fitaa) where 12 doc-types declared `regime: 'CA'` but the `REGIMES` array shipped without `'CA'`. Bug shipped and was only fixed retroactively in #441.
+
 ## Integration checklist
 
 Beyond the 4 blockers, verify:
 
 | Check | Where | What to verify |
 |---|---|---|
-| Doc-types registered | `arckit-claude/config/doc-types.mjs` | All new type codes present, correct `category` (Compliance/Governance/Procurement), correct `regime`, `severity: HIGH` only on assessment-class types. New regime added to `REGIMES` and `REGIME_LABELS` if first overlay for that jurisdiction. |
+| Doc-types registered | `arckit-claude/config/doc-types.mjs` | All new type codes present, correct `category` (Compliance/Governance/Procurement), correct `regime`. Regime registered in `REGIMES` + `REGIME_LABELS` (B5). Severity-HIGH check: `grep "severity: 'HIGH'" arckit-claude/config/doc-types.mjs \| grep "regime: '<XX>'"` — assessment-class types (PIA-equivalent, AI-assurance, FITAA-equivalent, ITSG-equivalent) should be HIGH. |
 | Pages allow-list | `arckit-claude/commands/pages.md` (Document Types table) | Every new type code listed under correct section header, mirrors `doc-types.mjs`. |
 | Templates dual-located | `arckit-claude/templates/` AND `.arckit/templates/` | `diff -rq arckit-claude/templates/ .arckit/templates/` shows zero diffs for new templates. |
 | Recipe schema | `arckit-claude/skills/arckit-build/recipes/<recipe>.yaml` | Run author's verbatim Python snippet (deps resolution check). Manually verify wave shape, flagship target's deps. |
@@ -127,11 +145,19 @@ For each new `xx-*` command file:
 
 - [ ] **Frontmatter:** `description` present. No invalid fields (`name:`, `color:`, `permissionMode:`, `tools:` are NOT valid plugin command frontmatter — `name:` in particular is a common contributor mistake; filename is source of truth).
 - [ ] **`$ARGUMENTS` placeholder** present in body — `tests/plugin/test_commands_structure.py::test_arguments_placeholder_present` checks this. Existing `ca-*`/`uae-*` commands fail this test (32 known failures); new overlay commands should pass.
-- [ ] **`create-project.sh` lookup** present (commands that assume project exists are inconsistent with the canonical flow).
+- [ ] **`create-project.sh` lookup** — only required for project-bootstrapping commands (`principles`, `requirements`, the first command someone runs). Most overlay commands assume the project already exists and skip this; that matches the FR/AT/EU/CA precedent. Not a defect when absent.
 - [ ] **`generate-document-id.sh`** invoked correctly (B3).
 - [ ] **`<!-- DOC-CONTROL-HEADER -->` resolution** instruction (B2 — should override classification when not UK/UAE).
 - [ ] **Write tool** used to save artefact (32K output token limit otherwise).
-- [ ] **Handoffs:** every `handoffs.command` value resolves to a real file in `arckit-claude/commands/`. Common bug: pluralisation (`risks` vs `risk`); deps on commands shipping in sibling PRs.
+- [ ] **Handoffs:** every `handoffs.command` value resolves to a real file in `arckit-claude/commands/`. Common bug: pluralisation (`risks` vs `risk`); deps on commands shipping in sibling PRs. Validation needs YAML parsing (handoffs are nested under YAML frontmatter — raw grep misses), e.g.:
+  ```python
+  import yaml, glob, pathlib
+  cmds = {pathlib.Path(p).stem for p in glob.glob('arckit-claude/commands/*.md')}
+  for f in glob.glob('arckit-claude/commands/<prefix>-*.md'):
+      fm = yaml.safe_load(open(f).read().split('---')[1])
+      for h in (fm or {}).get('handoffs', []):
+          if h['command'] not in cmds: print(f, '→', h['command'])
+  ```
 - [ ] **Template path** references `${CLAUDE_PLUGIN_ROOT}/templates/<name>-template.md` with `templates-custom` then `.arckit/templates/` fallback.
 - [ ] **Per-template footer:** `**Generated by**`, `**Generated on**`, `**ArcKit Version**`, `**Project**`, `**Model**` all present.
 
@@ -172,6 +198,10 @@ grep -n "generate-document-id.sh [A-Z]\+ --filename" arckit-claude/commands/<pre
 # B4: converter drift
 python scripts/converter.py && git status --porcelain | grep -v "memory/"
 
+# B5: regime registration
+grep -nE "^export const REGIMES|^  [A-Z]+:" arckit-claude/config/doc-types.mjs | head -10
+grep -oE "regime: '[A-Z]+'" arckit-claude/config/doc-types.mjs | sort -u
+
 # Recipe schema
 python3 -c "
 import yaml
@@ -209,9 +239,10 @@ EOF
 
 Verify with the URL the command returns.
 
-## Reference test case
+## Reference test cases
 
-PR #441 (au-federal, 2026-05-05) is the canonical test fixture for this skill. It exhibited all 4 blockers (B1-B4), 6 important issues, and the converter-drift "transparency note" inversion. The review at https://github.com/tractorjuice/arc-kit/pull/441#issuecomment-4386152326 shows the expected output shape and depth.
+- **PR #441 (au-federal, 2026-05-05)** — canonical fixture for B1–B4. Exhibited all four (template heading, classification override, doc-id invocation, converter drift) plus 6 important issues. Posted review: https://github.com/tractorjuice/arc-kit/pull/441#issuecomment-4386152326
+- **PR #432 (ca-federal-fitaa, merged 2026-05-05)** — fixture for B5 (regime registration). Shipped 12 doc-types with `regime: 'CA'` while `'CA'` was missing from the `REGIMES` array. Bug only surfaced retroactively in #441. Validates the skill against an already-merged overlay where B1–B4 all PASS but a different blocker class exists.
 
 ## Common mistakes by reviewers (self-checks)
 
