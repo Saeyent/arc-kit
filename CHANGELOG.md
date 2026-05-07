@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.19.1] - 2026-05-07
+
+### Fixed
+
+- **Auto-allow hook now matches `gov-reuse` tempfiles.** The v4.18.1 broadened regex in `allow-plugin-internals.mjs` accepted tempfile patterns like `/tmp/grants-handoff*.json` and `/tmp/datascout-handoff-energy.json`, but its agent-name segment `[a-z][a-z0-9]*` excluded hyphens — so `/tmp/gov-reuse-handoff*.json` (and any future hyphenated agent name) failed to match, triggering a permission prompt for every per-capability dispatch in `/arckit:gov-reuse`. Widened to `[a-z][a-z0-9-]*` to allow hyphens in the agent name while still rejecting paths starting with hyphen, hidden files, and other negative cases. Verified against 18 path patterns including `/tmp/gov-reuse-handoff-appointment-booking.json`, `/tmp/aws-research-handoff.json`, `/tmp/gov-code-search-handoff.json` (positive) and `/etc/passwd`, `/tmp/-handoff.json`, hidden files (negative).
+
 ## [4.19.0] - 2026-05-07
 
 ### Added

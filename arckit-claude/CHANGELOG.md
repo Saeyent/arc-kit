@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.19.1] - 2026-05-07
+
+### Fixed
+
+- **`allow-plugin-internals.mjs` regex covers hyphenated agent names.** Pattern segment for the agent name was `[a-z][a-z0-9]*` (no hyphens), so `/tmp/gov-reuse-handoff*.json` and any future `aws-research-handoff*.json` / `gov-code-search-handoff*.json` failed to match, prompting on every per-capability tempfile read. Widened to `[a-z][a-z0-9-]*` while preserving negative-case rejection (paths starting with hyphen, hidden files, files outside /tmp).
+
 ## [4.19.0] - 2026-05-07
 
 ### Added

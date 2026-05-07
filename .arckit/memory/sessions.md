@@ -10,6 +10,84 @@ Automated session summaries captured by the ArcKit session-learner hook.
   - chore: bump version to 4.6.1
   - fix: trim skill descriptions to fit 250-char context cap (#215) (#266)
 
+### 2026-05-07 10:19 — general
+
+- **Commits:** 2 | **Files changed:** 99
+- **Artifacts:** none detected
+- **Summary:**
+  - chore(release): bump non-Claude extensions to 4.19.0 for version parity
+  - feat(442): three-tier subagent split for datascout/grants/gov-reuse + Agent-context hook (v4.16.0 → v4.19.0) (#446)
+
+### 2026-05-07 10:12 — general
+
+- **Commits:** 1 | **Files changed:** 1
+- **Artifacts:** none detected
+- **Summary:**
+  - fix(442): MD040 in arckit-datascout-writer (specify code-block language)
+
+### 2026-05-07 10:07 — general
+
+- **Commits:** 1 | **Files changed:** 29
+- **Artifacts:** none detected
+- **Summary:**
+  - chore(442): revert non-Claude extensions to pre-split state
+
+### 2026-05-07 09:59 — general
+
+- **Commits:** 1 | **Files changed:** 25
+- **Artifacts:** none detected
+- **Summary:**
+  - feat(442): /arckit:gov-reuse reader/orchestrator/writer split (v4.19.0, Claude only)
+
+### 2026-05-07 09:30 — general
+
+- **Commits:** 1 | **Files changed:** 20
+- **Artifacts:** none detected
+- **Summary:**
+  - feat(442): inject project context on Agent dispatch (v4.18.2)
+
+### 2026-05-07 06:41 — general
+
+- **Commits:** 1 | **Files changed:** 17
+- **Artifacts:** none detected
+- **Summary:**
+  - fix(442): auto-allow hook matches per-bucket grants tempfiles (v4.18.1)
+
+### 2026-05-07 06:26 — general
+
+- **Commits:** 1 | **Files changed:** 16
+- **Artifacts:** none detected
+- **Summary:**
+  - chore(release): bump to 4.18.0 — /arckit:grants reader/orchestrator/writer split
+
+### 2026-05-07 06:22 — general
+
+- **Commits:** 1 | **Files changed:** 28
+- **Artifacts:** none detected
+- **Summary:**
+  - feat(442): /arckit:grants reader/orchestrator/writer split
+
+### 2026-05-07 05:57 — general
+
+- **Commits:** 1 | **Files changed:** 17
+- **Artifacts:** none detected
+- **Summary:**
+  - chore(deps): pin mermaid stack to 11.14.0 for wardley-beta support
+
+### 2026-05-06 17:50 — general
+
+- **Commits:** 79 | **Files changed:** 463
+- **Artifacts:** none detected
+- **Summary:**
+  - fix(442): /arckit:pages picks up data-source profiles (v4.17.1)
+  - feat(442): datascout spawns per-source profiles (v4.17.0)
+  - fix(442): telemetry collects in plugin-only repos (v4.16.6)
+  - fix(442): hook matches env-var literal + forbid orchestrator helper scripts (v4.16.5)
+  - fix(442): auto-allow hook moves to PreToolUse w/ permissionDecision (v4.16.4)
+  - fix(442): orchestrator → slash command (Claude Code plugin constraint, v4.16.3)
+  - feat(442): auto-allow plugin-internal Read/Bash (v4.16.2)
+  - fix(442): pure-Node validator — drop ajv runtime dep (v4.16.1)
+
 ### 2026-05-03 21:26 — general
 
 - **Commits:** 1 | **Files changed:** 17
@@ -159,112 +237,4 @@ Automated session summaries captured by the ArcKit session-learner hook.
 - **Artifacts:** none detected
 - **Summary:**
   - docs(start): add Vibe Start 3-prompt super prompt to getting started (#405)
-
-### 2026-05-03 13:41 — general
-
-- **Commits:** 1 | **Files changed:** 10
-- **Artifacts:** none detected
-- **Summary:**
-  - docs(start): add Vibe Start 3-prompt super prompt to getting started
-
-### 2026-05-03 08:53 — general
-
-- **Commits:** 1 | **Files changed:** 2
-- **Artifacts:** none detected
-- **Summary:**
-  - fix(articles): add 2026-05-03 essay markdown + hero image (untracked) (#404)
-
-### 2026-05-03 08:52 — general
-
-- **Commits:** 1 | **Files changed:** 2
-- **Artifacts:** none detected
-- **Summary:**
-  - fix(articles): add 2026-05-03 essay markdown + hero image (untracked)
-
-### 2026-05-03 08:43 — general
-
-- **Commits:** 1 | **Files changed:** 1
-- **Artifacts:** none detected
-- **Summary:**
-  - docs(articles): add 3 May 2026 essay card — £24bn pattern + ArcKit (#403)
-
-### 2026-05-03 08:24 — general
-
-- **Commits:** 1 | **Files changed:** 1
-- **Artifacts:** none detected
-- **Summary:**
-  - docs(articles): add 3 May 2026 essay card — £24bn pattern + ArcKit
-
-### 2026-05-03 08:08 — general
-
-- **Commits:** 1 | **Files changed:** 5
-- **Artifacts:** none detected
-- **Summary:**
-  - docs: refresh test repo tables to v48 (public only) (#402)
-
-### 2026-05-02 10:54 — general
-
-- **Commits:** 2 | **Files changed:** 13
-- **Artifacts:** none detected
-- **Summary:**
-  - fix(docs): mobile nav overlap, latest writing update, CSS cache-bust (#401)
-  - fix(docs): make govuk-back-link readable in dark mode (#400)
-
-### 2026-05-02 10:47 — general
-
-- **Commits:** 2 | **Files changed:** 7
-- **Artifacts:** none detected
-- **Summary:**
-  - fix(articles): add three articles linked from articles.html but untracked (#399)
-  - fix(docs): make warning text and contributor cards readable in dark mode (#398)
-
-### 2026-05-02 10:41 — general
-
-- **Commits:** 1 | **Files changed:** 1
-- **Artifacts:** none detected
-- **Summary:**
-  - fix(docs): make govuk-inset-text readable in dark mode (#397)
-
-### 2026-05-01 22:11 — general
-
-- **Commits:** 140 | **Files changed:** 1899
-- **Artifacts:** none detected
-- **Summary:**
-  - docs(guides): link the 16 new guides from #381 and #385 on guides.html (#395)
-  - feat(hooks): make graph-inject community-regime aware (#380)
-  - docs(guides): link all guides on guides.html and reconcile counts (#394)
-  - docs(guides): add per-command guides for UAE, Austrian, and grants commands (#385)
-  - docs(guides): add grants.md for /arckit:grants (#381)
-  - chore: bump version to 4.12.3 (#393)
-  - fix(hooks): traceability recipe missing withNodeMetadata, refMap always empty (#389) (#392)
-  - chore: bump version to 4.12.2 (#391)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
