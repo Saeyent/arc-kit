@@ -15,8 +15,10 @@ CODEX_PROMPTS = CODEX_ROOT / "prompts"
 CODEX_COMMANDS = CODEX_ROOT / "commands"
 CODEX_AGENTS = CODEX_ROOT / "agents"
 CODEX_CONFIG = CODEX_ROOT / "config.toml"
+CODEX_README = CODEX_ROOT / "README.md"
 CODEX_MANIFEST = CODEX_ROOT / ".codex-plugin" / "plugin.json"
 CODEX_MARKETPLACE = REPO_ROOT / ".agents" / "plugins" / "marketplace.json"
+CODEX_STANDALONE_MARKETPLACE = CODEX_ROOT / ".agents" / "plugins" / "marketplace.json"
 CODEX_MCP = CODEX_ROOT / ".mcp.json"
 CODEX_HOOKS_JSON = CODEX_ROOT / "hooks" / "hooks.json"
 CODEX_HOOK_RUNNER = CODEX_ROOT / "hooks" / "arckit-codex-hook.mjs"
@@ -165,6 +167,32 @@ def test_codex_marketplace_entry_points_to_standalone_repo():
     assert plugin["category"] == manifest["interface"]["category"]
 
 
+def test_codex_standalone_repo_has_local_marketplace_entry():
+    marketplace = json.loads(CODEX_STANDALONE_MARKETPLACE.read_text(encoding="utf-8"))
+    manifest = json.loads(CODEX_MANIFEST.read_text(encoding="utf-8"))
+
+    assert marketplace["name"] == "arckit"
+    assert marketplace["interface"]["displayName"] == "ArcKit Plugins"
+    plugin = next(item for item in marketplace["plugins"] if item["name"] == "arckit-codex")
+    assert plugin["source"] == {
+        "source": "local",
+        "path": "./",
+    }
+    assert plugin["policy"] == {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL",
+    }
+    assert plugin["category"] == manifest["interface"]["category"]
+
+
+def test_codex_readme_documents_plugin_hook_setup():
+    readme = CODEX_README.read_text(encoding="utf-8")
+
+    assert "codex plugin marketplace add tractorjuice/arckit-codex" in readme
+    assert "codex_hooks = true" in readme
+    assert "hooks/hooks.json" in readme
+
+
 def test_codex_plugin_mcp_config_is_codex_native():
     mcp = json.loads(CODEX_MCP.read_text(encoding="utf-8"))
     servers = mcp["mcpServers"]
@@ -207,11 +235,15 @@ def test_codex_hooks_are_configured_in_manifest_and_standalone_config():
     } <= configured_events
     pre_tool = config["hooks"]["PreToolUse"][0]
     assert "apply_patch" in pre_tool["matcher"]
-    assert pre_tool["hooks"][0]["command"].endswith("arckit-codex-hook.mjs PreToolUse")
+    assert '$(git rev-parse --show-toplevel)/.codex/hooks/arckit-codex-hook.mjs' in pre_tool["hooks"][0]["command"]
+    assert pre_tool["hooks"][0]["command"].endswith('" PreToolUse')
     post_tool = config["hooks"]["PostToolUse"][0]
     assert "Write" in post_tool["matcher"]
-    assert post_tool["hooks"][0]["command"].endswith("arckit-codex-hook.mjs PostToolUse")
-    assert config["hooks"]["Stop"][0]["hooks"][0]["command"].endswith("arckit-codex-hook.mjs Stop")
+    assert '$(git rev-parse --show-toplevel)/.codex/hooks/arckit-codex-hook.mjs' in post_tool["hooks"][0]["command"]
+    assert post_tool["hooks"][0]["command"].endswith('" PostToolUse')
+    stop_command = config["hooks"]["Stop"][0]["hooks"][0]["command"]
+    assert '$(git rev-parse --show-toplevel)/.codex/hooks/arckit-codex-hook.mjs' in stop_command
+    assert stop_command.endswith('" Stop')
 
 
 def run_codex_hook(event_name: str, payload: dict) -> dict:
