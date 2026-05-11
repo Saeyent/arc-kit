@@ -692,7 +692,7 @@ def generate_codex_config_toml(mcp_json_path, agents_dir, output_path):
         'statusMessage = "Checking ArcKit prompt"',
         "",
         "[[hooks.PreToolUse]]",
-        'matcher = "Bash|apply_patch|Edit|Write"',
+        'matcher = "Read|Bash|apply_patch|Edit|Write"',
         "",
         "[[hooks.PreToolUse.hooks]]",
         'type = "command"',

@@ -14,6 +14,7 @@ CODEX_SKILLS = CODEX_ROOT / "skills"
 CODEX_PROMPTS = CODEX_ROOT / "prompts"
 CODEX_COMMANDS = CODEX_ROOT / "commands"
 CODEX_AGENTS = CODEX_ROOT / "agents"
+CODEX_HOOKS = CODEX_ROOT / "hooks"
 CODEX_CONFIG = CODEX_ROOT / "config.toml"
 CODEX_README = CODEX_ROOT / "README.md"
 CODEX_MANIFEST = CODEX_ROOT / ".codex-plugin" / "plugin.json"
@@ -41,6 +42,14 @@ AGENT_BACKED_SKILLS = {
     "arckit-gov-reuse",
     "arckit-grants",
     "arckit-research",
+}
+CODEX_CLAUDE_PARITY_HOOK_MODULES = {
+    "graph-inject.mjs",
+    "graph-rollups.mjs",
+    "graph-utils.mjs",
+    "hook-utils.mjs",
+    "project-context-builder.mjs",
+    "sync-guides.mjs",
 }
 BAD_TEMPLATE_OVERRIDE_RE = re.compile(
     r"(First|first|Check if|check if|User overrides).*`\.arckit/templates/"
@@ -236,6 +245,7 @@ def test_codex_hooks_are_configured_in_manifest_and_standalone_config():
         "Stop",
     } <= configured_events
     pre_tool = config["hooks"]["PreToolUse"][0]
+    assert "Read" in pre_tool["matcher"]
     assert "apply_patch" in pre_tool["matcher"]
     assert '$(git rev-parse --show-toplevel)/.codex/hooks/arckit-codex-hook.mjs' in pre_tool["hooks"][0]["command"]
     assert pre_tool["hooks"][0]["command"].endswith('" PreToolUse')
@@ -246,6 +256,19 @@ def test_codex_hooks_are_configured_in_manifest_and_standalone_config():
     stop_command = config["hooks"]["Stop"][0]["hooks"][0]["command"]
     assert '$(git rev-parse --show-toplevel)/.codex/hooks/arckit-codex-hook.mjs' in stop_command
     assert stop_command.endswith('" Stop')
+
+
+def test_codex_bundles_claude_graph_and_pages_hook_processors():
+    missing = [
+        module
+        for module in sorted(CODEX_CLAUDE_PARITY_HOOK_MODULES)
+        if not (CODEX_HOOKS / module).is_file()
+    ]
+    assert not missing
+
+    runner = CODEX_HOOK_RUNNER.read_text(encoding="utf-8")
+    assert "runGraphInjectHook" in runner
+    assert "runSyncGuidesHook" in runner
 
 
 def run_codex_hook(event_name: str, payload: dict) -> dict:
@@ -362,6 +385,25 @@ def test_codex_hook_allows_arckit_mcp_permission_requests():
     assert output["hookSpecificOutput"]["decision"]["behavior"] == "allow"
 
 
+def test_codex_hook_allows_plugin_internal_reads():
+    output = run_codex_hook(
+        "PreToolUse",
+        {
+            "hook_event_name": "PreToolUse",
+            "cwd": str(REPO_ROOT),
+            "tool_name": "Read",
+            "tool_input": {
+                "file_path": str(CODEX_ROOT / "templates" / "pages-template.html"),
+            },
+        },
+    )
+
+    hook_output = output["hookSpecificOutput"]
+    assert hook_output["hookEventName"] == "PreToolUse"
+    assert hook_output["permissionDecision"] == "allow"
+    assert "plugin-internal file" in hook_output["permissionDecisionReason"]
+
+
 def test_codex_hook_injects_arckit_context_on_session_start():
     output = run_codex_hook(
         "SessionStart",
@@ -397,9 +439,38 @@ def test_codex_hook_injects_graph_context_for_health(tmp_path):
     )
 
     context = output["hookSpecificOutput"]["additionalContext"]
-    assert "ArcKit Artifact Graph Context (health)" in context
+    assert "Health Pre-processor Complete (hook)" in context
+    assert "ORPHAN-REQ" in context
+    assert "docs/health.json written" in context
     assert "001-demo" in context
-    assert "Discovery" in context
+    assert (tmp_path / "docs" / "health.json").is_file()
+
+
+def test_codex_hook_runs_pages_preprocessor(tmp_path):
+    project_dir = tmp_path / "projects" / "001-demo"
+    project_dir.mkdir(parents=True)
+    (tmp_path / ".arckit").mkdir()
+    artifact = project_dir / "ARC-001-REQ-v1.0.md"
+    artifact.write_text(
+        "# Requirements\n\n| Field | Value |\n|-------|-------|\n| Status | Draft |\n\nBR-001 user need\n",
+        encoding="utf-8",
+    )
+
+    output = run_codex_hook(
+        "UserPromptSubmit",
+        {
+            "hook_event_name": "UserPromptSubmit",
+            "cwd": str(tmp_path),
+            "prompt": "$arckit-pages",
+        },
+    )
+
+    context = output["hookSpecificOutput"]["additionalContext"]
+    assert "Pages Pre-processor Complete (hook)" in context
+    assert "docs/manifest.json" in context
+    assert "docs/llms.txt" in context
+    assert (tmp_path / "docs" / "manifest.json").is_file()
+    assert (tmp_path / "docs" / "index.html").is_file()
 
 
 def test_codex_hook_updates_manifest_and_stamps_provenance(tmp_path):
