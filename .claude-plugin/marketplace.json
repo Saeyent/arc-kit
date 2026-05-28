@@ -5,14 +5,14 @@
     "email": "tractorjuice@users.noreply.github.com"
   },
   "metadata": {
-    "description": "Enterprise Architecture Governance & Vendor Procurement Toolkit for Claude Code",
+    "description": "The Enterprise Architecture Governance Harness for Claude Code",
     "version": "1.0.0"
   },
   "plugins": [
     {
       "name": "arckit",
       "source": "./arckit-claude",
-      "description": "71 slash commands for enterprise architecture artifacts, vendor procurement, and UK Government compliance",
+      "description": "71 slash commands across strategy, architecture, delivery, and assurance — including UK Government compliance",
       "version": "5.4.0",
       "author": {
         "name": "TractorJuice"
