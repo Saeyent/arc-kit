@@ -154,7 +154,11 @@ for plugin_dir in "${COMMUNITY_PLUGINS[@]}"; do
       | .dependencies = (
           (.dependencies // [])
           | map(
-              if type == "object" and .name == "arckit"
+              # All ArcKit plugins (core + community overlays) ship in
+              # lockstep, so pin every inter-plugin "arckit*" dependency to
+              # the new version — not just the core "arckit" dependency.
+              # Covers community->community deps like arckit-au-energy -> arckit-au.
+              if type == "object" and ((.name // "") | startswith("arckit"))
               then .version = "=" + $v
               else .
               end
@@ -162,7 +166,7 @@ for plugin_dir in "${COMMUNITY_PLUGINS[@]}"; do
         )
     ' "$manifest" > "${manifest}.tmp"
     mv "${manifest}.tmp" "$manifest"
-    update_file "$manifest" ".version + .dependencies[arckit].version"
+    update_file "$manifest" ".version + .dependencies[arckit*].version"
   fi
   if [[ -f "$version_file" ]]; then
     echo "$NEW_VERSION" > "$version_file"

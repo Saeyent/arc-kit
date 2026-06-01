@@ -5,6 +5,19 @@ All notable changes to the ArcKit Claude Code plugin will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+## [5.8.0] - 2026-06-01
+
+### Added
+
+- **govreposcrape dependency-intelligence tools wired into the gov agents** (#551). `dependency_compare` → `arckit-gov-reuse` (pairwise dependency-overlap between candidate repos; orchestrator collapses near-duplicates/forks at ≥60% overlap; new **Dependency Overlap Analysis** section). `vulnerability_exposure` → `arckit-gov-landscape` (CVE blast-radius across an org's major packages via the SBOM graph + live OSV.dev, plus end-of-life flags; new **Supply-Chain & Vulnerability Exposure** section). Both added to the respective agents' `tools:` allowlists; `docs/MCP-CATALOGUE.md` refreshed to all 9 govreposcrape tools (17 of 23 consumed).
+- **Registry support for the Australian critical-infrastructure + energy overlays.** `config/doc-types.mjs` + `commands/pages.md` register `AUOT`, `AUSOCI` (#539) and `AUAESCSF`, `AUENERGY` (#553) — all regime `AU`, HIGH severity. `skills/arckit-build/SKILL.md` adds the `au-energy` recipe row. The commands themselves ship in the `arckit-au` and `arckit-au-energy` overlay plugins.
+
+### Fixed
+
+- **Windows path handling in plugin hooks** (#548). `hooks/allow-plugin-internals.mjs` normalises `\` → `/` before the plugin-root prefix check (no-op on POSIX) so the `isUnderPluginRoot` gate works on Windows; the generated Codex hook gets the same fix. The `test-doc-types-dual-registration.mjs` validator imports `doc-types.mjs` via `pathToFileURL()` for Windows ESM compatibility.
+
 ## [5.7.0] - 2026-05-29
 
 ### Fixed

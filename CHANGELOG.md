@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.8.0] — 2026-06-01
+
 ### Added
 
 - **`arckit-au-energy` community overlay — first Australian sector overlay (11th marketplace plugin).** Adds the Australian Energy Sector overlay as a standalone sector plugin layered on the `arckit-au` jurisdiction baseline, mirroring how `arckit-uk-finance` / `arckit-uk-nhs` layer sectors on the UK baseline (rather than bundling the sector menu inside the jurisdiction overlay). Two commands — `au-aescsf` (AESCSF maturity assessment) and `au-energy-compliance` (AER ring-fencing, AEMC NER/NGR, AEMO interfaces, DERMS/DOE, CSIP-AUS, SOCI escalation) — plus the `au-energy` build recipe (22 targets, optional default-off `SERVICE_INVENTORY`). The recipe composes federal-layer targets (`AU_E8`, `AU_ISM`, `AU_OT`, `AU_SOCI`, `AU_PIA`, `AU_NDB`) from `arckit-au`, so the plugin manifest declares dependencies on **both** `arckit` core and `arckit-au` — the marketplace's first community→community plugin dependency. Doc types `AUAESCSF` + `AUENERGY` (regime AU, HIGH severity). Ships public synthetic evaluation fixtures (`tests/fixtures/au-energy/`) — an applicable DNSP case and a non-SOCI supplier negative case — with deterministic pytest coverage. Register/evidence-heavy energy review composes existing skills (`data-model`, `servicenow`, `dfd`, `diagram`, `risk`, `maturity-model`, `traceability`, `graph-report`) instead of a new inventory command. Original work by @royster70 (#549), repackaged from a stacked-on-#539 draft into a clean standalone sector plugin. Also corrected the `arckit-au` marketplace description from "8 commands" to "10 commands" (OT security + SOCI/CIRMP landed in #539).
@@ -14,6 +16,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **`dependency_compare` → `/arckit:gov-reuse`.** The `arckit-gov-reuse-reader` subagent runs pairwise dependency-overlap between candidate repositories that share a capability and emits the results in a new optional `dependency_comparisons` array on the gov-reuse handoff schema. The orchestrator (`commands/gov-reuse.md`) uses overlap ≥ 60% to collapse near-duplicate / forked candidates — keeping the higher-scored repo as the primary recommendation and avoiding double-counting effort savings — and the writer renders a new **Dependency Overlap Analysis** section in the GOVR artefact. Reader budget capped at 3 `dependency_compare` calls / 5 comparison entries per dispatch.
   - **`vulnerability_exposure` → `/arckit:gov-landscape`.** The `arckit-gov-landscape` agent now scans the domain's major organisations and dominant packages for known-CVE blast-radius (via the SBOM graph + live OSV.dev) and renders a new **Supply-Chain & Vulnerability Exposure** section (exposure by organisation, exposure by dominant package, end-of-life flags). Flagged as a landscape-level signal, not a per-repo audit — points users to `/arckit:secure` / `/arckit:risk` for adoption decisions.
   - Both tools added to the respective agents' `tools:` frontmatter allowlists. `docs/MCP-CATALOGUE.md` updated to mark them as consumed (17 of 23 tools now wired). Non-Claude formats regenerated via `scripts/converter.py`.
+- **Cross-sector OT security and SOCI/CIRMP commands added to the `arckit-au` federal overlay** (#539), taking it to 10 commands. `au-ot-security` (ASD operational technology cyber security assessment for connected OT/ICS/SCADA environments) and `au-soci-cirmp` (SOCI Act Critical Infrastructure Risk Management Program governance + evidence pack). Both are general Australian critical-infrastructure capabilities — optional default-off `AU_OT` / `AU_SOCI` targets in the `au-federal` recipe — and are reused (not redefined) by the new `arckit-au-energy` overlay. Doc types `AUOT` + `AUSOCI` (regime AU, HIGH severity).
+
+### Fixed
+
+- **Windows validation paths** (#548). Normalised plugin-root path comparisons in `allow-plugin-internals.mjs` and the generated `arckit-codex-hook.mjs` (`\` → `/` before prefix-matching, a no-op on POSIX) so the `isUnderPluginRoot` gate works on Windows; imported `doc-types.mjs` via `pathToFileURL()` in the dual-registration validator so Node ESM dynamic import works on Windows absolute paths. Also ignores local `.agents/skills/` and `.claude/worktrees/` dev folders.
+
+### Changed
+
+- **Removed references to the retired `tractorjuice/arckit-book` repository** (#536/#554). The repo is no longer available, so the README link 404'd. Dropped the "ArcKit Book" section from `README.md` and repointed the `.devin/wiki.json` authoritative-overview note at `CLAUDE.md` + `README.md` (the live canonical sources). Historical CHANGELOG entries recording the original move (#324/#325) left intact.
+- Documentation: noted Claude Code v2.1.157's "workflow" keyword trigger on the start guide (#552); split the homepage stat cards into Jurisdictions / Sectors / Agents (#547).
 
 ## [5.7.0] — 2026-05-29
 
